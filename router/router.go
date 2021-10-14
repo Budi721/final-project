@@ -10,6 +10,11 @@ import (
 func NewRouter(dependencies service.Dependencies) *gin.Engine {
 	router := gin.Default()
     authMiddleware := dependencies.AuthValidate
+    router.GET("/", func(context *gin.Context) {
+        context.JSON(200, map[string]string{
+            "Haloo": "Dengan Budi Yang Deploy",
+        })
+    })
 	setUserRouter(router, authMiddleware, dependencies.UserService)
     setEnrollmentRouter(router, authMiddleware, dependencies.EnrollmentService)
     setArticleRouter(router, authMiddleware, dependencies.ArticleService)

@@ -1,7 +1,6 @@
 package repository
 
 import (
-    "time"
     "github.com/itp-backend/backend-a-co-create/common/errors"
     "github.com/itp-backend/backend-a-co-create/model/domain"
     "github.com/itp-backend/backend-a-co-create/model/dto"
@@ -26,7 +25,7 @@ type articleRepository struct {
 
 func (repo articleRepository) Create(article *dto.Article) (*domain.Article, error) {
     a := &domain.Article{
-        PostingDate: time.Now().UnixMilli(),
+        PostingDate: 123456789,
         Kategori:    article.Kategori,
         Judul:       article.Judul,
         IsiArtikel:  article.IsiArtikel,

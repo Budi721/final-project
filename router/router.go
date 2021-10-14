@@ -8,13 +8,16 @@ import (
 
 func NewRouter(dependencies service.Dependencies) *gin.Engine {
 	router := gin.Default()
+    //authMiddleware := dependencies.AuthValidate
+    //ensureLogin := dependencies.AuthValidate.EnsureLoggedIn()
+    //ensureNotLogin := dependencies.AuthValidate.EnsureNotLoggedIn()
 
 	setUserRouter(router, dependencies.UserService)
 	return router
 }
 
 func setUserRouter(router *gin.Engine, dependencies service.IUserService) {
-    router.POST("/login", handler.Login(dependencies))
+    router.POST("/login",handler.Login(dependencies))
     router.POST("/register", handler.Register(dependencies))
 }
 

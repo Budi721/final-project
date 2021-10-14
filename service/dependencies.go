@@ -1,14 +1,16 @@
 package service
 
 import (
-    "github.com/itp-backend/backend-a-co-create/app"
-    "github.com/itp-backend/backend-a-co-create/external/jwt_client"
-    "github.com/itp-backend/backend-a-co-create/external/mysql"
-    "github.com/itp-backend/backend-a-co-create/repository"
+	"github.com/itp-backend/backend-a-co-create/app"
+	"github.com/itp-backend/backend-a-co-create/external/jwt_client"
+	"github.com/itp-backend/backend-a-co-create/external/mysql"
+	"github.com/itp-backend/backend-a-co-create/middleware"
+	"github.com/itp-backend/backend-a-co-create/repository"
 )
 
 type Dependencies struct {
-	UserService IUserService
+	AuthValidate middleware.AuthValidate
+	UserService  IUserService
 }
 
 func InstantiateDependencies(application *app.Application) Dependencies {
@@ -21,10 +23,11 @@ func InstantiateDependencies(application *app.Application) Dependencies {
 		DBName:   application.Config.DBName,
 	})
 	db := mysqlClient.OpenDB()
-    userRepo := repository.NewUserRepository(db)
-    userService := NewUserService(userRepo, application.Config, jwtWrapper)
-
+	authMiddleware := middleware.NewAuthValidate(application.Config, jwtWrapper)
+	userRepo := repository.NewUserRepository(db)
+	userService := NewUserService(userRepo, application.Config, jwtWrapper)
 	return Dependencies{
+        AuthValidate: authMiddleware,
 		UserService: userService,
 	}
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(namaLengkap, username, password, topik string, loginAs uint) (*domain.User, error)
+	Create(namaLengkap, username, password, topik, loginAs string) (*domain.User, error)
 	FindByUsername(username, password, loginAs string) (*domain.User, error)
 	DoesUsernameExist(username string) (bool, error)
 }
@@ -21,7 +21,7 @@ type IUserRepository struct {
 	DB *gorm.DB
 }
 
-func (repo *IUserRepository) Create(namaLengkap, username, password, topik string, loginAs uint) (*domain.User, error) {
+func (repo *IUserRepository) Create(namaLengkap, username, password, topik, loginAs string) (*domain.User, error) {
 	user := &domain.User{
 		Username: username,
 		LoginAs:  loginAs,

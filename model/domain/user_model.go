@@ -6,7 +6,7 @@ type User struct {
 	Id            int        `json:"id_user,omitempty"`
 	Username      string     `json:"username,omitempty"`
 	Password      string     `json:"password,omitempty"`
-	LoginAs       uint       `json:"login_as,omitempty"`
+	LoginAs       string       `json:"login_as,omitempty"`
 	TopikDiminati string     `gorm:"-" json:"topik_diminati,omitempty"`
 	AuthToken     string     `gorm:"-" json:"token,omitempty"`
 	Article       Article    `gorm:"foreignKey:IdUser" json:"-"`

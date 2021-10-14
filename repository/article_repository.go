@@ -25,9 +25,8 @@ type articleRepository struct {
 }
 
 func (repo articleRepository) Create(article *dto.Article) (*domain.Article, error) {
-    now := time.Now()
     a := &domain.Article{
-        PostingDate: now.UnixMilli(),
+        PostingDate: time.Now().Unix(),
         Kategori:    article.Kategori,
         Judul:       article.Judul,
         IsiArtikel:  article.IsiArtikel,

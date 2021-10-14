@@ -12,6 +12,7 @@ type Dependencies struct {
 	UserService       IUserService
 	EnrollmentService IEnrollmentService
 	ArticleService    IArticleService
+	ProjectService    IProjectService
 }
 
 func InstantiateDependencies(application *app.Application) Dependencies {
@@ -24,11 +25,14 @@ func InstantiateDependencies(application *app.Application) Dependencies {
 	enrollmentService := NewEnrollmentService(enrollmentRepo)
 	articleRepo := repository.NewArticleRepository(application.DB)
 	articleService := NewArticleService(articleRepo)
+	projectRepo := repository.NewProjectRepository(application.DB)
+	projectService := NewProjectService(projectRepo)
 
 	return Dependencies{
 		AuthValidate:      authMiddleware,
 		UserService:       userService,
 		EnrollmentService: enrollmentService,
 		ArticleService:    articleService,
+		ProjectService:    projectService,
 	}
 }

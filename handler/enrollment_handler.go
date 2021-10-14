@@ -19,8 +19,8 @@ func GetEnrollmentByStatus(service service.IEnrollmentService) gin.HandlerFunc {
 			return
 		}
 
-		loginAs := helper.GetLoginAs(userEmail)
-		if loginAs != "2" {
+		userLogin := helper.GetUserData(userEmail)
+		if userLogin.LoginAs != "2" {
 			responder.NewHttpResponse(c, http.StatusForbidden, nil, errors.New("you're not admin"))
 			return
 		}
@@ -49,8 +49,8 @@ func ApproveEnrollment(service service.IEnrollmentService) gin.HandlerFunc {
             responder.NewHttpResponse(c, http.StatusBadRequest, nil, err)
             return
         }
-        loginAs := helper.GetLoginAs(userEmail)
-        if loginAs != "2" {
+        userLogin := helper.GetUserData(userEmail)
+        if userLogin.LoginAs != "2" {
             responder.NewHttpResponse(c, http.StatusForbidden, nil, errors.New("you're not admin"))
             return
         }

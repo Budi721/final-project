@@ -18,8 +18,8 @@ func GetEmailUserLogin(c *gin.Context) (string, error) {
 	return userEmail, nil
 }
 
-func GetLoginAs(email string) string {
+func GetUserData(email string) *domain.User {
     var user *domain.User
     app.Init().DB.First(&user, "username = ?", email)
-    return user.LoginAs
+    return user
 }

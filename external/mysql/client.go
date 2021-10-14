@@ -47,7 +47,7 @@ func NewMysqlClient(config ClientConfig) *client {
 		log.Fatalf("unable to initiate mysql connection. %v", err)
 	}
 
-    err = dbConn.AutoMigrate(&domain.User{}, &domain.Enrollment{}, &domain.Article{})
+    err = dbConn.AutoMigrate(&domain.User{}, &domain.Enrollment{}, &domain.Article{}, domain.Project{})
     if err != nil {
         log.Fatalf("unable to migrate db. %v", err)
     }

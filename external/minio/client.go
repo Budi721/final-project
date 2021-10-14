@@ -1,12 +1,12 @@
 package minio
 
 import (
-	"context"
-	"fmt"
-	"github.com/minio/minio-go/v7"
-	"github.com/minio/minio-go/v7/pkg/credentials"
-	"github.com/rysmaadit/go-template/common/errors"
-	log "github.com/sirupsen/logrus"
+    "context"
+    "fmt"
+    "github.com/itp-backend/backend-a-co-create/common/errors"
+    "github.com/minio/minio-go/v7"
+    "github.com/minio/minio-go/v7/pkg/credentials"
+    log "github.com/sirupsen/logrus"
 )
 
 type Client interface {

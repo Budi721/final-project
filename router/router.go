@@ -1,33 +1,20 @@
 package router
 
 import (
-	"net/http"
-	"os"
-
-	"github.com/rysmaadit/go-template/handler"
-	"github.com/rysmaadit/go-template/service"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
+    "github.com/gin-gonic/gin"
+    "github.com/itp-backend/backend-a-co-create/handler"
+    "github.com/itp-backend/backend-a-co-create/service"
 )
 
-func NewRouter(dependencies service.Dependencies) http.Handler {
-	r := mux.NewRouter()
+func NewRouter(dependencies service.Dependencies) *gin.Engine {
+	router := gin.Default()
 
-	setAuthRouter(r, dependencies.AuthService)
-	setCheckRouter(r, dependencies.CheckService)
-
-	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
-	return loggedRouter
+	setUserRouter(router, dependencies.UserService)
+	return router
 }
 
-func setAuthRouter(router *mux.Router, dependencies service.AuthServiceInterface) {
-	router.Methods(http.MethodGet).Path("/auth/token").Handler(handler.GetToken(dependencies))
-	router.Methods(http.MethodPost).Path("/auth/token/validate").Handler(handler.ValidateToken(dependencies))
+func setUserRouter(router *gin.Engine, dependencies service.IUserService) {
+    router.POST("/login", handler.Login(dependencies))
+    router.POST("/register", handler.Register(dependencies))
 }
 
-func setCheckRouter(router *mux.Router, checkService service.CheckService) {
-	router.Methods(http.MethodGet).Path("/check/redis").Handler(handler.CheckRedis(checkService))
-	router.Methods(http.MethodGet).Path("/check/mysql").Handler(handler.CheckMysql(checkService))
-	router.Methods(http.MethodGet).Path("/check/minio").Handler(handler.CheckMinio(checkService))
-}

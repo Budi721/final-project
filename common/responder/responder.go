@@ -1,65 +1,55 @@
 package responder
 
 import (
-	"encoding/json"
-	"net/http"
+    "github.com/gin-gonic/gin"
+    "net/http"
 
-	pkgErrors "github.com/pkg/errors"
-	"github.com/rysmaadit/go-template/common/errors"
-	"github.com/sirupsen/logrus"
+    "github.com/itp-backend/backend-a-co-create/common/errors"
+    pkgErrors "github.com/pkg/errors"
+    "github.com/sirupsen/logrus"
 )
 
 type Template struct {
-	Status bool        `json:"status"`
+	Status int         `json:"status"`
 	Error  interface{} `json:"error"`
 	Result interface{} `json:"result"`
 }
 
-func NewHttpResponse(r *http.Request, w http.ResponseWriter, httpCode int, result interface{}, err error) {
+func NewHttpResponse(c *gin.Context, httpCode int, result interface{}, err error) {
 	if err != nil {
-		Error(r, w, err, httpCode)
+		Error(c, err, httpCode)
 	} else {
-		Success(w, result, httpCode)
+		Success(c, result, httpCode)
 	}
 }
 
-func Error(r *http.Request, w http.ResponseWriter, err error, httpCode int) {
+func Error(c *gin.Context, err error, httpCode int) {
 	switch err := pkgErrors.Cause(err).(type) {
 	case *errors.BadRequestError:
-		badRequestError(r, w, err)
+		badRequestError(c, err)
 	case *errors.UnauthorizedError:
-		unauthorizedError(r, w, err)
+		unauthorizedError(c, err)
 	default:
-		GenericError(r, w, err, err.Error(), httpCode)
+		GenericError(c, err, err.Error(), httpCode)
 	}
 }
 
-func Success(w http.ResponseWriter, successResponse interface{}, responseCode ...int) {
-	w.Header().Set("Content-Type", "application/json")
-
-	if len(responseCode) == 0 {
-		w.WriteHeader(http.StatusOK)
-	} else {
-		w.WriteHeader(responseCode[0])
-	}
+func Success(c *gin.Context, successResponse interface{}, responseCode ...int) {
 
 	t := Template{
-		Status: true,
-		Result: successResponse,
-		Error:  nil,
+		Status: http.StatusOK,
+        Error:  nil,
+        Result: successResponse,
 	}
 
-	if successResponse != nil {
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(t)
-	}
+    c.JSON(http.StatusOK, t)
 }
 
-func GenericError(r *http.Request, w http.ResponseWriter, err error, errorResponse interface{}, responseCode int) {
+func GenericError(c *gin.Context, err error, errorResponse interface{}, responseCode int) {
 	log := logrus.WithFields(logrus.Fields{
-		"Method": r.Method,
-		"Host":   r.Host,
-		"Path":   r.URL.Path,
+		"Method": c.Request.Method,
+		"Host":   c.Request.Host,
+		"Path":   c.Request.RequestURI,
 	}).WithField("ResponseCode", responseCode)
 
 	if responseCode < 500 {
@@ -68,24 +58,21 @@ func GenericError(r *http.Request, w http.ResponseWriter, err error, errorRespon
 		log.Error(err.Error())
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(responseCode)
-
 	t := Template{
-		Status: false,
+		Status: responseCode,
 		Result: nil,
 		Error:  errorResponse,
 	}
 
 	if errorResponse != nil {
-		_ = json.NewEncoder(w).Encode(t)
+		c.AbortWithStatusJSON(responseCode, t)
 	}
 }
 
-func badRequestError(r *http.Request, w http.ResponseWriter, err *errors.BadRequestError) {
-	GenericError(r, w, err, err.Error(), http.StatusBadRequest)
+func badRequestError(c *gin.Context, err *errors.BadRequestError) {
+	GenericError(c, err, err.Error(), http.StatusBadRequest)
 }
 
-func unauthorizedError(r *http.Request, w http.ResponseWriter, err *errors.UnauthorizedError) {
-	GenericError(r, w, err, err.Error(), http.StatusUnauthorized)
+func unauthorizedError(c *gin.Context, err *errors.UnauthorizedError) {
+	GenericError(c, err, err.Error(), http.StatusUnauthorized)
 }

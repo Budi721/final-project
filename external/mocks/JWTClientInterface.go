@@ -4,7 +4,7 @@ package mocks
 
 import (
 	jwt "github.com/dgrijalva/jwt-go"
-	contract "github.com/rysmaadit/go-template/contract"
+	contract "github.com/itp-backend/backend-a-co-create/contract"
 
 	mock "github.com/stretchr/testify/mock"
 )

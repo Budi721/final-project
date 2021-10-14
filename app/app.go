@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/rysmaadit/go-template/config"
+	"github.com/itp-backend/backend-a-co-create/config"
 )
 
 type Application struct {
@@ -15,3 +15,4 @@ func Init() *Application {
 
 	return application
 }
+

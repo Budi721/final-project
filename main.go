@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/rysmaadit/go-template/app"
-	"github.com/rysmaadit/go-template/cli"
+	"github.com/itp-backend/backend-a-co-create/app"
+	"github.com/itp-backend/backend-a-co-create/cli"
 	"os"
 )
 

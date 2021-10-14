@@ -6,8 +6,8 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-playground/validator"
-	"github.com/rysmaadit/go-template/common/errors"
-	"github.com/rysmaadit/go-template/common/util"
+	"github.com/itp-backend/backend-a-co-create/common/errors"
+	"github.com/itp-backend/backend-a-co-create/common/util"
 	log "github.com/sirupsen/logrus"
 )
 

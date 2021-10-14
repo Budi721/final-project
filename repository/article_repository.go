@@ -6,6 +6,7 @@ import (
     "github.com/itp-backend/backend-a-co-create/model/dto"
     log "github.com/sirupsen/logrus"
     "gorm.io/gorm"
+    timeFormat "time"
 )
 
 type IArticleRepository interface {
@@ -25,7 +26,7 @@ type articleRepository struct {
 
 func (repo articleRepository) Create(article *dto.Article) (*domain.Article, error) {
     a := &domain.Article{
-        PostingDate: 123456789,
+        PostingDate: timeFormat.Now().UnixMilli(),
         Kategori:    article.Kategori,
         Judul:       article.Judul,
         IsiArtikel:  article.IsiArtikel,

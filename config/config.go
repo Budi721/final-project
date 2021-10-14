@@ -28,6 +28,7 @@ type Config struct {
 
 func Init() *Config {
 	//defaultEnv := ".env"
+	// mancing
 
 	//if err := gotenv.Load(defaultEnv); err != nil {
 	//	log.Warning("failed load .env")

@@ -10,7 +10,6 @@ import (
     "net/http"
 )
 
-
 func Register(IUserService service.IUserService) gin.HandlerFunc {
     return func(c *gin.Context) {
         if c.Request.Method != http.MethodPost {

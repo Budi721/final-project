@@ -17,7 +17,7 @@ type IUserService interface {
     Login(username, password, loginAs string) (*domain.User, error)
 }
 
-func NewUserService(repo repository.UserRepository, appConfig *config.Config, jwtClient jwt_client.JWTClientInterface) IUserService {
+func NewUserService(repo repository.IUserRepository, appConfig *config.Config, jwtClient jwt_client.JWTClientInterface) IUserService {
     return &userService{
         r:         repo,
         appConfig: appConfig,
@@ -26,7 +26,7 @@ func NewUserService(repo repository.UserRepository, appConfig *config.Config, jw
 }
 
 type userService struct {
-    r repository.UserRepository
+    r repository.IUserRepository
     appConfig *config.Config
     jwtClient jwt_client.JWTClientInterface
 }

@@ -84,15 +84,20 @@ func (a authValidate) EnsureLoggedIn() gin.HandlerFunc {
             StandardClaims: jwt.StandardClaims{},
         }
         log.Println(resp)
-        c.Set("email", claims["sub"].(string))
+        c.Set("userEmail", claims["sub"].(string))
         c.Next()
     }
-
 }
 
 func (a authValidate) EnsureNotLoggedIn() gin.HandlerFunc {
     return func(c *gin.Context) {
+        authHeader := c.Request.Header.Get("Authorization")
+        if authHeader != "" {
+            responder.NewHttpResponse(c, http.StatusForbidden, nil, errors.New("you must log out first"))
+            return
+        }
 
+        c.Next()
     }
 }
 

@@ -1,8 +1,10 @@
 package config
 
 import (
-	log "github.com/sirupsen/logrus"
-	"os"
+    "github.com/itp-backend/backend-a-co-create/external/mysql"
+    log "github.com/sirupsen/logrus"
+    "gorm.io/gorm"
+    "os"
 
 	"github.com/subosito/gotenv"
 )
@@ -55,4 +57,16 @@ func Init() *Config {
 	}
 
 	return appConfig
+}
+
+func InitDB() *gorm.DB {
+    mysqlClient := mysql.NewMysqlClient(mysql.ClientConfig{
+        Username:     GetString("DB_USERNAME"),
+        Password:     GetString("DB_PASSWORD"),
+        Host:         GetString("DB_HOST"),
+        Port:         GetInt("DB_PORT"),
+        DBName:         GetString("DB_NAME"),
+    })
+
+    return mysqlClient.OpenDB()
 }

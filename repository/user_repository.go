@@ -7,21 +7,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserRepository interface {
+type IUserRepository interface {
 	Create(namaLengkap, username, password, topik, loginAs string) (*domain.User, error)
 	FindByUsername(username, password, loginAs string) (*domain.User, error)
 	DoesUsernameExist(username string) (bool, error)
 }
 
-func NewUserRepository(db *gorm.DB) UserRepository {
-	return &IUserRepository{DB: db}
+func NewUserRepository(db *gorm.DB) IUserRepository {
+	return &userRepository{DB: db}
 }
 
-type IUserRepository struct {
+type userRepository struct {
 	DB *gorm.DB
 }
 
-func (repo *IUserRepository) Create(namaLengkap, username, password, topik, loginAs string) (*domain.User, error) {
+func (repo *userRepository) Create(namaLengkap, username, password, topik, loginAs string) (*domain.User, error) {
 	user := &domain.User{
 		Username: username,
 		LoginAs:  loginAs,
@@ -53,7 +53,7 @@ func (repo *IUserRepository) Create(namaLengkap, username, password, topik, logi
 	return user, nil
 }
 
-func (repo *IUserRepository) FindByUsername(username, password, loginAs string) (*domain.User, error) {
+func (repo *userRepository) FindByUsername(username, password, loginAs string) (*domain.User, error) {
 	u := &domain.User{}
 	result := repo.DB.Where("username = ? AND login_as = ?", username, loginAs).First(u)
 
@@ -71,7 +71,7 @@ func (repo *IUserRepository) FindByUsername(username, password, loginAs string) 
 	}
 }
 
-func (repo *IUserRepository) DoesUsernameExist(username string) (bool, error) {
+func (repo *userRepository) DoesUsernameExist(username string) (bool, error) {
 	u := &domain.User{}
 	if err := repo.DB.Where("username = ?", username).First(u).Error; errCheck.Is(err, gorm.ErrRecordNotFound) {
 		return false, nil

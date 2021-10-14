@@ -1,12 +1,10 @@
 package config
 
 import (
-    "github.com/itp-backend/backend-a-co-create/external/mysql"
-    log "github.com/sirupsen/logrus"
-    "gorm.io/gorm"
-    "os"
-
-	"github.com/subosito/gotenv"
+	"github.com/itp-backend/backend-a-co-create/external/mysql"
+	log "github.com/sirupsen/logrus"
+	"gorm.io/gorm"
+	"os"
 )
 
 type Config struct {
@@ -29,11 +27,11 @@ type Config struct {
 }
 
 func Init() *Config {
-	defaultEnv := ".env"
+	//defaultEnv := ".env"
 
-	if err := gotenv.Load(defaultEnv); err != nil {
-		log.Warning("failed load .env")
-	}
+	//if err := gotenv.Load(defaultEnv); err != nil {
+	//	log.Warning("failed load .env")
+	//}
 
 	log.SetOutput(os.Stdout)
 
@@ -60,13 +58,13 @@ func Init() *Config {
 }
 
 func InitDB() *gorm.DB {
-    mysqlClient := mysql.NewMysqlClient(mysql.ClientConfig{
-        Username:     GetString("DB_USERNAME"),
-        Password:     GetString("DB_PASSWORD"),
-        Host:         GetString("DB_HOST"),
-        Port:         GetInt("DB_PORT"),
-        DBName:         GetString("DB_NAME"),
-    })
+	mysqlClient := mysql.NewMysqlClient(mysql.ClientConfig{
+		Username: GetString("DB_USERNAME"),
+		Password: GetString("DB_PASSWORD"),
+		Host:     GetString("DB_HOST"),
+		Port:     GetInt("DB_PORT"),
+		DBName:   GetString("DB_NAME"),
+	})
 
-    return mysqlClient.OpenDB()
+	return mysqlClient.OpenDB()
 }

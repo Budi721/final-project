@@ -4,7 +4,7 @@ import (
     "fmt"
     "github.com/itp-backend/backend-a-co-create/model/domain"
     log "github.com/sirupsen/logrus"
-    "gorm.io/driver/mysql"
+    "gorm.io/driver/postgres"
     "gorm.io/gorm"
 )
 
@@ -30,14 +30,22 @@ func (c *client) OpenDB() *gorm.DB {
 }
 
 func NewMysqlClient(config ClientConfig) *client {
-	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
-		config.Username,
-		config.Password,
-		config.Host,
-		config.Port,
-		config.DBName,
-	)
-	dbConn, err := gorm.Open(mysql.Open(connStr), &gorm.Config{
+	//connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
+	//	config.Username,
+	//	config.Password,
+	//	config.Host,
+	//	config.Port,
+	//	config.DBName,
+	//)
+    connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=require TimeZone=Asia/Jakarta",
+        config.Host,
+        config.Username,
+        config.Password,
+        config.DBName,
+        config.Port,
+    )
+    //host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai
+	dbConn, err := gorm.Open(postgres.Open(connStr), &gorm.Config{
 		SkipDefaultTransaction:                   true,
 		PrepareStmt:                              true,
 		DisableForeignKeyConstraintWhenMigrating: true,

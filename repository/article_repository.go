@@ -1,12 +1,12 @@
 package repository
 
 import (
+    "time"
     "github.com/itp-backend/backend-a-co-create/common/errors"
     "github.com/itp-backend/backend-a-co-create/model/domain"
     "github.com/itp-backend/backend-a-co-create/model/dto"
     log "github.com/sirupsen/logrus"
     "gorm.io/gorm"
-    "time"
 )
 
 type IArticleRepository interface {

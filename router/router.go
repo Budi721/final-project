@@ -43,10 +43,9 @@ func setArticleRouter(router *gin.Engine, authMiddleware middleware.AuthValidate
 
 func setProjectRouter(router *gin.Engine, authMiddleware middleware.AuthValidate, dependencies service.IProjectService)  {
     projectRouter := router.Group("/project")
-    // with param ?invited_user_id=2
-    projectRouter.GET("/", authMiddleware.EnsureLoggedIn(), handler.ProjectByInvitedUserIdHandler(dependencies))
+    projectRouter.GET("/", authMiddleware.EnsureLoggedIn(), handler.ProjectByInvitedUserIdHandler(dependencies)) // with param ?invited_user_id=2
     projectRouter.POST("/create", authMiddleware.EnsureLoggedIn(), handler.CreateProjectHandler(dependencies))
     projectRouter.GET("/detail/:id", authMiddleware.EnsureLoggedIn(),handler.DetailProjectHandler(dependencies))
     projectRouter.DELETE("/delete/:id", authMiddleware.EnsureLoggedIn(),handler.DeleteProjectHandler(dependencies))
-    //projectRouter.POST("/accept-invitation", authMiddleware.EnsureLoggedIn(), handler.)
+    projectRouter.POST("/accept-invitation", authMiddleware.EnsureLoggedIn(), handler.AcceptProjectHandler(dependencies))
 }

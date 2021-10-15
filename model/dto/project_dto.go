@@ -7,6 +7,5 @@ type Project struct {
 	LinkTrello         string `json:"link_trello" binding:"required"`
 	DeskripsiProject   string `json:"deskripsi_project" binding:"required"`
 	InvitedUserId      []int  `json:"invited_user_id" binding:"required"`
-	CollaboratorUserId []int  `json:"collaborator_user_id"`
 	Admin              int    `json:"admin"`
 }
